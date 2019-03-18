@@ -44,7 +44,7 @@ def load_jupyter_server_extension(nb_server_app):
         (
             endpoint + "(.*)",
             ImmerseHandler,
-            {"path": c.immerse_dir, "default_filename": "index,html"},
+            {"path": c.immerse_dir, "default_filename": "index.html"},
         )
     ]
     web_app.add_handlers(".*$", handlers)
