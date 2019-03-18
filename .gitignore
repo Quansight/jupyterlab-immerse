@@ -3,3 +3,6 @@ jupyter_immerse.egg-info/
 jupyter_immerse/__pycache__/
 node_modules/
 npm-debug.log
+lib/
+*.egg-info/
+.ipynb_checkpoints
