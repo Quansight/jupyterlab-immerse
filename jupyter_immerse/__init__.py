@@ -1,4 +1,4 @@
-from tornado.web import StaticFileHandler
+import tornado.web as web
 from traitlets import Unicode
 from traitlets.config import Configurable
 
@@ -13,16 +13,16 @@ class ImmerseConfig(Configurable):
     Allows configuration of access to Immerse 
     """
     immerse_dir = Unicode(
-        "./dist",
-        config=True,
-        help="The path to the built Immerse application",
+        "./dist", config=True, help="The path to the built Immerse application"
     )
 
 
-class ImmerseHandler(StaticFileHandler):
+class ImmerseHandler(IPythonHandler, web.StaticFileHandler):
+
+    @web.authenticated
     def get(self, path):
         path = path.strip("/")
-        return StaticFileHandler.get(self, path)
+        return web.StaticFileHandler.get(self, path)
 
 
 def _jupyter_server_extension_paths():
