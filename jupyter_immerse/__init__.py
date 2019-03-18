@@ -13,7 +13,7 @@ class ImmerseConfig(Configurable):
     Allows configuration of access to Immerse 
     """
     immerse_dir = Unicode(
-        "/home/ian/quansight/jupyterlab-immerse-deploy/immerse/dist",
+        "./dist",
         config=True,
         help="The path to the built Immerse application",
     )
