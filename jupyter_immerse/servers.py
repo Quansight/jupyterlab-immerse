@@ -1,29 +1,33 @@
 import json
 
-import tornado.web as web
-
-from notebook.base.handlers import IPythonHandler
+from traitlets.config import Configurable
 
 
-class ImmerseServersHandler(IPythonHandler):
+class BaseImmerseServersManager(Configurable):
+    """
+    A class managing getting and setting of default server
+    connection data for connections to OmniSci backends.
+    """
 
-    @web.authenticated
-    def get(self):
-        resp = [
-            {
-                "GTM": "GTM-5SWDG4",
-                "customStyles": {
-                    "title": "OmniSci | Data Visualization Example / Demo: Shipping Traffic Demo"
-                },
-                "database": "mapd",
-                "host": "ships-demo-local.mapd.com",
-                "loadDashboard": "8",
-                "master": True,
-                "port": 443,
-                "protocol": "https",
-                "password": "HyperInteractive",
-                "username": "demouser",
-            }
-        ]
-        self.set_status(200)
-        self.finish(json.dumps(resp))
+    def get_servers(self):
+        return []
+
+    def set_servers(self):
+        raise NotImplementedError(
+            "This manager does not support setting server connections"
+        )
+
+
+class ImmerseServersManager(BaseImmerseServersManager):
+    """
+    An Immerse servers manager that gets and sets the servers.json
+    file from a static file.
+    """
+
+    def __init__(self, path):
+        self.path = path
+
+    def get_servers(self):
+        with open(self.path) as f:
+            data = f.read()
+            return json.loads(data)
