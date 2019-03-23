@@ -1,29 +1,10 @@
-import tornado.web as web
-from traitlets import Unicode
-from traitlets.config import Configurable
-
 from notebook.utils import url_path_join
-from notebook.base.handlers import IPythonHandler
+
+from .config import ImmerseConfig
+from .servers import ImmerseServersHandler
+from .immerse import ImmerseHandler
 
 __version__ = "0.1.0"
-
-
-class ImmerseConfig(Configurable):
-    """
-    Allows configuration of access to Immerse 
-    """
-    immerse_dir = Unicode(
-        "./dist", config=True, help="The path to the built Immerse application"
-    )
-
-
-class ImmerseHandler(IPythonHandler, web.StaticFileHandler):
-
-    @web.authenticated
-    def get(self, path):
-        path = path.strip("/")
-        return web.StaticFileHandler.get(self, path)
-
 
 def _jupyter_server_extension_paths():
     return [{"module": "jupyterlab_immerse"}]
@@ -40,11 +21,17 @@ def load_jupyter_server_extension(nb_server_app):
     web_app = nb_server_app.web_app
     base_url = web_app.settings["base_url"]
     endpoint = url_path_join(base_url, "immerse")
+    servers_endpoint = url_path_join(base_url, "immerse", "servers.json")
+    print('adding handlers')
     handlers = [
+        (
+            servers_endpoint,
+            ImmerseServersHandler,
+        ),
         (
             endpoint + "(.*)",
             ImmerseHandler,
             {"path": c.immerse_dir, "default_filename": "index.html"},
-        )
+        ),
     ]
     web_app.add_handlers(".*$", handlers)
