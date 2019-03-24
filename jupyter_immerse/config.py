@@ -22,4 +22,6 @@ class ImmerseConfig(Configurable):
         """
         Default to the servers.json in the immerse static directory.
         """
-        return ImmerseServersManager(f"{self.immerse_dir}/servers.json")
+        return ImmerseServersManager(
+            f"{self.immerse_dir}/servers.json", config=self.config
+        )
