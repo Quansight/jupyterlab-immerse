@@ -1,7 +1,7 @@
 import json
 
 from traitlets.config import Configurable
-from traitlets import Dict, List
+from traitlets import Dict, List, default
 
 
 class BaseImmerseServersManager(Configurable):
@@ -9,6 +9,7 @@ class BaseImmerseServersManager(Configurable):
     A class managing getting and setting of default server
     connection data for connections to OmniSci backends.
     """
+
     def get_servers(self):
         return []
 
@@ -36,12 +37,16 @@ class ImmerseServersManager(BaseImmerseServersManager):
         allow_none=True,
     )
 
+    @default("servers")
+    def _default_servers(self):
+        return None
+
     def __init__(self, path, **kwargs):
         super(BaseImmerseServersManager, self).__init__(**kwargs)
         self.path = path
 
     def get_servers(self):
-        if self.servers is not None:
+        if self.servers:
             return self.servers
 
         with open(self.path) as f:

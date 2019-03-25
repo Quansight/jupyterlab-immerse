@@ -5,6 +5,7 @@ from .handlers import ImmerseHandler, ImmerseServersHandler
 
 __version__ = "0.1.0"
 
+
 def _jupyter_server_extension_paths():
     return [{"module": "jupyterlab_immerse"}]
 
@@ -22,10 +23,7 @@ def load_jupyter_server_extension(nb_server_app):
     endpoint = url_path_join(base_url, "immerse")
     servers_endpoint = url_path_join(base_url, "immerse", "servers.json")
     handlers = [
-        (
-            servers_endpoint,
-            ImmerseServersHandler,
-        ),
+        (servers_endpoint, ImmerseServersHandler),
         (
             endpoint + "(.*)",
             ImmerseHandler,
