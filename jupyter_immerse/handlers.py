@@ -17,6 +17,7 @@ class ImmerseHandler(IPythonHandler, web.StaticFileHandler):
         path = path.strip("/")
         return web.StaticFileHandler.get(self, path)
 
+
 class ImmerseLabRedirectHandler(APIHandler):
     """
     A handler that redirects to a JupyterLab workspace.
@@ -28,10 +29,16 @@ class ImmerseLabRedirectHandler(APIHandler):
     @web.authenticated
     def get(self):
         """
-        Get default server connection data.
+        Get the URL for JupyterLab.
         """
         self.set_status(200)
-        self.finish({ "url": self.lab_url})
+        self.finish({"url": self.lab_url})
+
+    def post(self):
+        data = self.get_json_body()
+        self.set_status(200)
+        self.finish({"url": self.lab_url})
+
 
 class ImmerseServersHandler(APIHandler):
     """
