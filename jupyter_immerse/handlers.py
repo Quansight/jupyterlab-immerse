@@ -1,3 +1,4 @@
+import copy
 import json
 
 import tornado.web as web
@@ -5,6 +6,7 @@ import tornado.web as web
 from notebook.base.handlers import APIHandler, IPythonHandler
 
 from .config import ImmerseConfig
+from .workspace import WORKSPACE_TEMPLATE, write_workspace
 
 
 class ImmerseHandler(IPythonHandler, web.StaticFileHandler):
@@ -24,8 +26,11 @@ class ImmerseLabRedirectHandler(APIHandler):
     A handler that redirects to a JupyterLab workspace.
     """
 
-    def initialize(self, lab_url):
+    def initialize(self, base_url, lab_url, workspaces_dir, workspaces_url):
+        self.server_base = base_url
         self.lab_url = lab_url
+        self.workspaces_dir = workspaces_dir
+        self.workspaces_url = workspaces_url
 
     @web.authenticated
     def get(self):
@@ -35,10 +40,23 @@ class ImmerseLabRedirectHandler(APIHandler):
         self.set_status(200)
         self.finish({"url": self.lab_url})
 
+    @web.authenticated
     def post(self):
         data = self.get_json_body()
+        workspace = copy.deepcopy(WORKSPACE_TEMPLATE)
+        query = data["query"]
+        widget = workspace["data"]["omnisci-grid-widget:omnisci-grid-widget-1"]
+        widget["data"]["initialQuery"] = query
+        space_name = "omnisci"
+        write_workspace(
+            workspace,
+            self.workspaces_dir,
+            self.server_base,
+            self.workspaces_url,
+            space_name,
+        )
         self.set_status(200)
-        self.finish({"url": self.lab_url})
+        self.finish({"url": f"{self.workspaces_url}{space_name}"})
 
 
 class ImmerseServersHandler(APIHandler):

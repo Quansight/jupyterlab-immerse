@@ -1,0 +1,32 @@
+{
+  "data": {
+    "omnisci-grid-widget:omnisci-grid-widget-1": {
+      "data": {
+        "initialQuery": ""
+      }
+    },
+    "layout-restorer:data": {
+      "main": {
+        "dock": {
+          "type": "tab-area",
+          "currentIndex": 0,
+          "widgets": ["omnisci-grid-widget:omnisci-grid-widget-1"]
+        },
+        "mode": "multiple-document",
+        "current": "omnisci-grid-widget:omnisci-grid-widget-1"
+      },
+      "left": {
+        "collapsed": true
+      },
+      "right": {
+        "collapsed": true
+      }
+    },
+    "jupyterlab-omnisci:initial_notebook": {
+      "initialNotebook": true
+    }
+  },
+  "metadata": {
+    "id": "/lab/workspaces/omnisci"
+  }
+}

@@ -23,8 +23,13 @@ def load_jupyter_server_extension(nb_server_app):
     immerse_config = ImmerseConfig(config=nb_server_app.config)
     lab_config = LabConfig(config=nb_server_app.config)
 
+    # Holy traitlets
     base_url = web_app.settings["base_url"]
-    endpoint = url_path_join(base_url, "immerse")
+    workspaces_dir = nb_server_app.workspaces_dir
+    workspaces_url = lab_config.workspaces_url
+    lab_url = lab_config.page_url
+
+    immerse_endpoint = url_path_join(base_url, "immerse")
     servers_endpoint = url_path_join(base_url, "immerse", "servers.json")
     lab_redirect_endpoint = url_path_join(base_url, "immerse", "lab")
     handlers = [
@@ -32,10 +37,15 @@ def load_jupyter_server_extension(nb_server_app):
         (
             lab_redirect_endpoint,
             ImmerseLabRedirectHandler,
-            {"lab_url": lab_config.page_url}
+            {
+                "base_url": base_url,
+                "lab_url": lab_url,
+                "workspaces_dir": workspaces_dir,
+                "workspaces_url": workspaces_url,
+            },
         ),
         (
-            endpoint + "(.*)",
+            immerse_endpoint + "(.*)",
             ImmerseHandler,
             {"path": immerse_config.immerse_dir, "default_filename": "index.html"},
         ),
