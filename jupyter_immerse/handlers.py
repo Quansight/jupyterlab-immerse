@@ -15,6 +15,7 @@ class ImmerseHandler(IPythonHandler, web.StaticFileHandler):
     @web.authenticated
     def get(self, path):
         path = path.strip("/")
+        self.set_cookie("license", "enterprise")
         return web.StaticFileHandler.get(self, path)
 
 
