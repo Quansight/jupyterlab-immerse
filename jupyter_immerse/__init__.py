@@ -26,6 +26,7 @@ def load_jupyter_server_extension(nb_server_app):
     # Holy traitlets
     base_url = web_app.settings["base_url"]
     workspaces_dir = nb_server_app.workspaces_dir
+    settings_dir = nb_server_app.user_settings_dir
     workspaces_url = lab_config.workspaces_url
     lab_url = lab_config.page_url
 
@@ -40,6 +41,7 @@ def load_jupyter_server_extension(nb_server_app):
             {
                 "base_url": base_url,
                 "lab_url": lab_url,
+                "settings_dir": settings_dir,
                 "workspaces_dir": workspaces_dir,
                 "workspaces_url": workspaces_url,
             },
