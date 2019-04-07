@@ -45,6 +45,8 @@ class ImmerseLabRedirectHandler(APIHandler):
     @web.authenticated
     def post(self):
         data = self.get_json_body()
+        # Create a config object
+        c = ImmerseConfig(config=self.config)
 
         # Construct and write the workspace file
         workspace = copy.deepcopy(WORKSPACE_TEMPLATE)
@@ -62,8 +64,9 @@ class ImmerseLabRedirectHandler(APIHandler):
 
         # Attempt to mark the indicated server as the default
         connection = copy.deepcopy(data)
+        immerse_servers = c.immerse_servers_manager.get_servers()
         connection.pop("query")
-        write_default_connection(connection, self.settings_dir)
+        write_default_connection(connection, self.settings_dir, immerse_servers)
 
         self.set_status(200)
         self.finish({"url": f"{self.workspaces_url}{space_name}"})
