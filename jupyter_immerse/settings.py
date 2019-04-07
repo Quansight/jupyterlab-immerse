@@ -5,13 +5,23 @@ import urllib
 
 from jupyterlab_server.json_minify import json_minify
 
-SETTINGS_FILE = 'jupyterlab-omnisci/connection.jupyterlab-settings'
+SETTINGS_FILE = 'connection.jupyterlab-settings'
+SETTINGS_FILE_DIR = 'jupyterlab-omnisci'
 
 def write_default_connection(connection, settings_dir, immerse_servers=[]):
-    fn = os.path.join(settings_dir, SETTINGS_FILE)
-    with open(fn) as f:
-        raw = f.read()
-        settings = json.loads(json_minify(raw))
+    # Make a settings directory if it doesn't exist
+    settings_file_dir = os.path.join(settings_dir, SETTINGS_FILE_DIR)
+    if not os.path.exists(settings_file_dir):
+        os.makedirs(settings_file_dir)
+
+    # If the settings file doesn't exist, assume no lab_servers
+    fn = os.path.join(settings_file_dir, SETTINGS_FILE)
+    if not os.path.exists(fn):
+        settings = { "servers": [] }
+    else:
+        with open(fn) as f:
+            raw = f.read()
+            settings = json.loads(json_minify(raw))
 
     lab_servers = settings["servers"]
 
