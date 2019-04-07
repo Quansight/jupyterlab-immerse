@@ -1,0 +1,4 @@
+recursive-include jupyter_immerse *.jupyterlab-workspace
+include README.md
+
+
