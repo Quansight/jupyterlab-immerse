@@ -25,7 +25,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     app.commands.addCommand(LAUNCH_COMMAND, {
       label: args => args['isLauncher'] ? 'OmniSci Immerse' : 'Launch OmniSci Immerse',
       caption: 'Launch OmniSci Immerse',
-      iconClass: 'immerse-OmniSciLogo',
+      iconClass: args => args['isPalette'] ? '' : 'immerse-OmniSciLogo',
       execute: () => window.open(`${PageConfig.getBaseUrl()}immerse`, '_blank')
     });
     launcher.add({
@@ -36,6 +36,7 @@ const extension: JupyterFrontEndPlugin<void> = {
     });
     palette.addItem({
       category: 'OmniSci',
+      args: { isPalette: true },
       command: LAUNCH_COMMAND
     });
   },
