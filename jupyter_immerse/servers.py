@@ -1,4 +1,5 @@
 import json
+import os
 
 from traitlets.config import Configurable
 from traitlets import Dict, List, default
@@ -48,6 +49,9 @@ class ImmerseServersManager(BaseImmerseServersManager):
     def get_servers(self):
         if self.servers:
             return self.servers
+
+        if not os.path.exists(self.path):
+            return []
 
         with open(self.path) as f:
             data = f.read()
