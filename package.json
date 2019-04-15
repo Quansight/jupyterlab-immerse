@@ -30,10 +30,10 @@
     "watch": "tsc -w"
   },
   "dependencies": {
-    "@jupyterlab/application": "^1.0.0-alpha.3",
-    "@jupyterlab/apputils": "^1.0.0-alpha.3",
-    "@jupyterlab/coreutils": "^3.0.0-alpha.3",
-    "@jupyterlab/launcher": "^1.0.0-alpha.3"
+    "@jupyterlab/application": "^1.0.0-alpha.6",
+    "@jupyterlab/apputils": "^1.0.0-alpha.6",
+    "@jupyterlab/coreutils": "^3.0.0-alpha.6",
+    "@jupyterlab/launcher": "^1.0.0-alpha.6"
   },
   "devDependencies": {
     "rimraf": "^2.6.1",
