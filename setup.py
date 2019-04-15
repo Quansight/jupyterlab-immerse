@@ -12,7 +12,7 @@ with open(path.join(here, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name="jupyter-immerse",
+    name="jupyterlab-immerse",
     version="0.1.0",
     description="Immerse proxy for the jupyter notebook server",
     long_description=long_description,  # Optional
